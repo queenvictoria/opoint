@@ -1,0 +1,40 @@
+{
+  "name": "opoint",
+  "version": "1.0.0",
+  "description": "Client wrappers around the oPoint API.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build --verbose tsconfig.build.json",
+    "test": "mocha --timeout 10000 tests"
+  },
+  "workspaces": ["packages/*"],
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/queenvictoria/opoint.git"
+  },
+  "keywords": [
+    "news",
+    "news feed",
+    "realtime news"
+  ],
+  "author": {
+    "name": "Snow",
+    "email": "snow@hol.ly",
+    "url": "https://hol.ly/"
+  },
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/queenvictoria/opoint/issues"
+  },
+  "homepage": "https://github.com/queenvictoria/opoint#readme",
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.4.0",
+    "@tsconfig/recommended": "^1.0.2",
+    "@types/node": "^20.6.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+
+  }
+}

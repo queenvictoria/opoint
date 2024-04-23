@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/search"
+    },
+    {
+      "path": "packages/storedsearch"
+    },
+    {
+      "path": "packages/safefeed"
+    }
+  ]
+}
