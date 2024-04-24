@@ -1,5 +1,5 @@
 {
-  "name": "opoint",
+  "name": "@opoint/opoint",
   "version": "1.0.0",
   "description": "Client wrappers around the oPoint API.",
   "main": "index.js",
@@ -35,6 +35,5 @@
     "@types/node": "^20.6.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-
   }
 }
