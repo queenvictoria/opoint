@@ -1,0 +1,21 @@
+{
+  "examples": [
+    "https://github.com/belgattitude/nextjs-monorepo-example/blob/main/packages/ts-utils/package.json"
+  ],
+  "name": "@opoint/types",
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "main": ".eslintrc.js",
+  "devDependencies": {},
+  "description": ""
+}

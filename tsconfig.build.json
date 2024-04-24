@@ -2,11 +2,14 @@
   "files": [],
   "references": [
     {
-      "path": "packages/core"
+      "path": "packages/types"
     },
     {
-      "path": "packages/eslint-config"
+      "path": "packages/core"
     },
+    // {
+    //   "path": "packages/eslint-config"
+    // },
     {
       "path": "packages/search"
     },

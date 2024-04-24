@@ -8,5 +8,16 @@
         "./packages/*"
       ]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../types"
+    }
+  ],
+  "include": [
+    "./**/*"
+  ],
+  "exclude": [
+    "./dist/**/*"
+  ]
 }
