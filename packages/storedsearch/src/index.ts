@@ -11,16 +11,22 @@ import {
 
 
 export class StoredSearch extends BaseService {
-  endpoint = ""
+  endpoint = "storedsearch"
 
-  constructor () {
-    super()
+  constructor ({api_key}: {api_key: string}) {
+    super({ api_key })
   }
 
   // https://api-docs.opoint.com/references/api#storedsearch-get-storedsearch-feed
   feed (params: StoredSearchFeedProps) {}
 
-  list (params: StoredSearchListProps) {}
+  /**
+   * List all stored searches
+   */
+  list () {
+    const params = {} as StoredSearchListProps
+    return this.get(params)
+  }
 
   add (params: StoredSearchAddProps) {
     return this.post(params)

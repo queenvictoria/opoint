@@ -10,14 +10,14 @@
     // {
     //   "path": "packages/eslint-config"
     // },
-    {
-      "path": "packages/search"
-    },
+    // {
+    //   "path": "packages/search"
+    // },
     {
       "path": "packages/storedsearch"
     },
-    {
-      "path": "packages/safefeed"
-    }
+    // {
+    //   "path": "packages/safefeed"
+    // }
   ]
 }

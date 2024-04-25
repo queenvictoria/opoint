@@ -1,51 +1,54 @@
 import {
   type SearchProps,
-  type StoredSearchAddProps
+  type StoredSearchAddProps,
+  type StoredSearchListProps
 } from '@opoint/types'
 
-type OpointProps = SearchProps | StoredSearchAddProps
+type OpointProps = SearchProps
+  | StoredSearchAddProps
+  | StoredSearchListProps
 
 export class BaseService {
-  base_url = 'https://api.opoint.com/'
+  base_url = 'https://api.opoint.com'
   method = 'GET'
-  headers = {}
+  headers = new Headers({
+    Accept: 'application/json'
+  })
+  endpoint = ''
 
-  constructor () {}
+  constructor ({api_key}: {api_key: string}) {
+    if (api_key) {
+      this.headers.set('Authorization', ['Token', api_key].join(' '))
+    }
+  }
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
    *
    * @param params
    */
-  fetch (body: OpointProps, method = 'GET') {
-    const url = `${this.base_url}/`
+  fetch (opts: RequestInit) {
+    const url = [this.base_url, this.endpoint].join('/')
 
-    return fetch(url, {
-      headers: this.headers,
-      method,
-      body: JSON.stringify(body)
-    })
+    // Add Headers
+    if ( this.headers )
+      opts.headers = this.headers
 
-    // .then((response) => {
-      //   // Do something with response
-      // })
-      // .catch(function (err) {
-      //   console.log("Unable to fetch -", err);
-      // })
+    return fetch(url, opts)
   }
 
   /**
    *
   */
   delete (body: OpointProps) {
-    return this.fetch(body, 'DELETE')
+    return this.fetch({ body: JSON.stringify(body), method: 'DELETE' })
   }
 
   /**
    *
   */
   get (body: OpointProps) {
-    return this.fetch(body, 'GET')
+    return this.fetch({ method: 'GET' })
   }
 
 
@@ -53,13 +56,18 @@ export class BaseService {
    *
    */
   patch (body: OpointProps) {
-    return this.fetch(body, 'PATCH')
+    return this.fetch({ body: JSON.stringify(body), method: 'PATCH' })
   }
 
   /**
    *
    */
   post (body: OpointProps) {
-    return this.fetch(body, 'POST')
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify(body)
+    }
+
+    return this.fetch(opts)
   }
 }

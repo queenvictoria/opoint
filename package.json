@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build --verbose tsconfig.build.json",
-    "test": "mocha --timeout 10000 tests"
+    "test": "jest"
   },
-  "workspaces": ["packages/*"],
-
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/queenvictoria/opoint.git"
@@ -29,10 +30,13 @@
   },
   "homepage": "https://github.com/queenvictoria/opoint#readme",
   "devDependencies": {
-    "chai": "^5.1.0",
-    "mocha": "^10.4.0",
     "@tsconfig/recommended": "^1.0.2",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.6.0",
+    "chai": "^5.1.0",
+    "jest": "^29.7.0",
+    "mocha": "^10.4.0",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
