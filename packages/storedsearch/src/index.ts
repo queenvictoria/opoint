@@ -21,7 +21,7 @@ export class StoredSearch extends BaseService {
   feed (params?: StoredSearchFeedProps) {
     if ( !params?.from) throw new Error("Feed requires a `from` timestamp.")
 
-    return this._get(['feed'])
+    return this._get(['feed'], params)
   }
 
   /**

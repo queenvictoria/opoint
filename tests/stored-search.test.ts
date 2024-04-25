@@ -1,5 +1,7 @@
 import { StoredSearch } from '@opoint/storedsearch'
-import { type StoredSearchListResult } from '@opoint/types'
+import { StoredSearchFeedProps, type StoredSearchListResult } from '@opoint/types'
+import { expect, test } from '@jest/globals'
+import { DocumentProps } from '@opoint/types/src'
 
 const SECONDS = 1000
 const TEST_ID = 100418137
@@ -70,8 +72,7 @@ test('Retrieve a stored search', async () => {
     id: TEST_ID
   }
   const res = await api.retrieve(props)
-  const body = await res.body
-  console.log("++++ retrieve body", JSON.stringify(body, null, 2))
+  const body = await res.json()
 
   expect(res).toHaveProperty('status')
   expect(res.status).toBe(200)
@@ -80,17 +81,6 @@ test('Retrieve a stored search', async () => {
   expect(typeof body).toEqual('object')
   expect(body).toHaveProperty('id')
   expect(typeof body.id).toEqual('number')
-
-  // expect(Array.isArray(body)).toEqual(true)
-  // expect(body).toBe(expect.any(Array))
-  // expect(body).toBeInstanceOf(Array)
-
-  // Probably need to wait a bit before aritcles start coming through as we
-  // can't set get_old_articles=true
-  // expect(body.length).toBeGreaterThan(0)
-
-  // const body = await res.body
-  // console.log("++++ retrieve body", JSON.stringify(body, null, 2))
 })
 
 test.todo('Update stored search')
@@ -100,21 +90,60 @@ test('Retrieving feed articles should fail without a from parameter', async () =
   expect(api.feed()).toThrow("Feed requires a `from` timestamp.")
 })
 
+// Don't nest tests
+let documents: Array<DocumentProps> = []
 test('Retrieve feed articles from all stored searches', async () => {
-  const from = Math.round((new Date().getTime() - (1*60*60*SECONDS))/1000)
-  const res = await api.feed({
-    from
-  })
-  console.log("++++ feed res", Object.keys(res))
+  // const from = Math.round((new Date().getTime() - (1*60*60*SECONDS))/1000)
+  // @FIX Correctly calculate `from` value.
+  const from = 1714033515
+  // const from = 1
+  const params: StoredSearchFeedProps = {
+    from,
+    format: 'json', // @FIX
+    num_art: 50,
+  }
 
-  const body = await res.body
-  console.log("++++ feed body", JSON.stringify(body, null, 2))
+  const res = await api.feed(params)
+  const body = await res.json()
 
   expect(res).toHaveProperty('status')
   expect(res.status).toBe(200)
 
-  expect(Array.isArray(body)).toEqual(true)
-  expect(body.length).toBeGreaterThan(0)
+  expect(body).toHaveProperty('searchresult')
+  expect(typeof body.searchresult).toEqual('object')
+  expect(body.searchresult).toHaveProperty('first_timestamp')
+  expect(body.searchresult).toHaveProperty('last_timestamp')
+  expect(body.searchresult).toHaveProperty('documents')
+
+  expect(typeof body.searchresult.documents).toEqual('number')
+  expect(body.searchresult.documents).toBeGreaterThan(0)
+  expect(body.searchresult).toHaveProperty('document')
+  expect(Array.isArray(body.searchresult.document)).toEqual(true)
+
+  documents = body.searchresult.document
+
+  expect(documents.length).toBeGreaterThan(0)
+  if (params.num_art)
+    expect(documents.length).toBeLessThan(params.num_art)
+})
+
+// Cant nest tests in Jest
+test('Retrieved feed articles', () => {
+  documents.forEach((doc: DocumentProps) => {
+    expect(typeof doc).toEqual('object')
+    expect(doc).toHaveProperty('id_article')
+    expect(doc).toHaveProperty('countrycode')
+    expect(doc).toHaveProperty('countryname')
+    expect(doc).toHaveProperty('unix_timestamp')
+    expect(doc).toHaveProperty('stimestamp')
+    expect(doc).toHaveProperty('word_count')
+    expect(doc).toHaveProperty('header')
+    expect(doc).toHaveProperty('summary')
+    expect(doc).toHaveProperty('body')
+    expect(doc).toHaveProperty('url')
+    expect(doc).toHaveProperty('orig_url')
+    expect(doc).toHaveProperty('stored_search_id')
+  })
 })
 
 test('Delete stored search', async () => {

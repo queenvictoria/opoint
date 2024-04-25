@@ -28,14 +28,16 @@ export class BaseService {
    *
    * @param params
    */
-  fetch (opts: RequestInit, paths?: Array<string>) {
+  fetch (opts: RequestInit, paths?: Array<string>, params?: any) {
     const fragments = [this.base_url, this.endpoint]
     if ( paths && paths.length > 0 ) {
       paths.forEach(p => fragments.push(p))
     }
     // Add a trailing slash
     fragments.push('')
-    const url = fragments.join('/')
+    const url = new URL(fragments.join('/'))
+    if (params)
+      url.search = new URLSearchParams(params).toString()
 
     // Add Headers
     opts.headers = this.headers
@@ -54,7 +56,7 @@ export class BaseService {
    *
   */
   _get (paths: Array<string>, params?: OpointProps) {
-    return this.fetch({ method: 'GET' }, paths)
+    return this.fetch({ method: 'GET' }, paths, params)
   }
 
   /**
