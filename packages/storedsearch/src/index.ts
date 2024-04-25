@@ -18,27 +18,35 @@ export class StoredSearch extends BaseService {
   }
 
   // https://api-docs.opoint.com/references/api#storedsearch-get-storedsearch-feed
-  feed (params: StoredSearchFeedProps) {}
+  feed (params?: StoredSearchFeedProps) {
+    if ( !params?.from) throw new Error("Feed requires a `from` timestamp.")
+
+    return this._get(['feed'])
+  }
 
   /**
    * List all stored searches
    */
   list () {
     const params = {} as StoredSearchListProps
-    return this._get(params)
+    return this._get([], params)
   }
 
   add (params: StoredSearchAddProps) {
     return this._post(params)
   }
 
-  retrieve (params: StoredSearchRetrieveProps) {}
+  retrieve ({id}: StoredSearchRetrieveProps) {
+    if (!id) throw new Error("Retrieve requires an ID.")
+
+    return this._get([id.toString()])
+  }
 
   update (params: StoredSearchUpdateProps) {}
 
-  delete ({id}: {id: string}): Promise<Response> {
-    if (!id) throw new Error("DELETE requires an ID.")
+  delete ({id}: {id: string|number}): Promise<Response> {
+    if (!id) throw new Error("Delete requires an ID.")
 
-    return this._delete(id)
+    return this._delete(id.toString())
   }
 }

@@ -53,10 +53,9 @@ export class BaseService {
   /**
    *
   */
-  _get (body: OpointProps) {
-    return this.fetch({ method: 'GET' })
+  _get (paths: Array<string>, params?: OpointProps) {
+    return this.fetch({ method: 'GET' }, paths)
   }
-
 
   /**
    *

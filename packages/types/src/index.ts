@@ -21,7 +21,10 @@ export type StoredSearchListResult = {
   // use_syndicates: boolean
 } & StoredSearchAddProps
 
-export type StoredSearchFeedProps = {}
+export type StoredSearchFeedProps = {
+  from: number
+}
+
 export type StoredSearchListProps = {}
 
 export type StoredSearchAddProps = {
@@ -33,7 +36,8 @@ export type StoredSearchAddProps = {
 }
 
 export type StoredSearchRetrieveProps = {
-  fred?: string
+  id: number|string
 }
+
 export type StoredSearchUpdateProps = {}
 export type StoredSearchDeleteProps = {}
