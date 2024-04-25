@@ -12,7 +12,8 @@ export class BaseService {
   base_url = 'https://api.opoint.com'
   method = 'GET'
   headers = new Headers({
-    Accept: 'application/json'
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
   })
   endpoint = ''
 
@@ -27,12 +28,17 @@ export class BaseService {
    *
    * @param params
    */
-  fetch (opts: RequestInit) {
-    const url = [this.base_url, this.endpoint].join('/')
+  fetch (opts: RequestInit, paths?: Array<string>) {
+    const fragments = [this.base_url, this.endpoint]
+    if ( paths && paths.length > 0 ) {
+      paths.forEach(p => fragments.push(p))
+    }
+    // Add a trailing slash
+    fragments.push('')
+    const url = fragments.join('/')
 
     // Add Headers
-    if ( this.headers )
-      opts.headers = this.headers
+    opts.headers = this.headers
 
     return fetch(url, opts)
   }
@@ -40,14 +46,14 @@ export class BaseService {
   /**
    *
   */
-  delete (body: OpointProps) {
-    return this.fetch({ body: JSON.stringify(body), method: 'DELETE' })
+  _delete (id: string) {
+    return this.fetch({ method: 'DELETE' }, [id])
   }
 
   /**
    *
   */
-  get (body: OpointProps) {
+  _get (body: OpointProps) {
     return this.fetch({ method: 'GET' })
   }
 
@@ -55,19 +61,19 @@ export class BaseService {
   /**
    *
    */
-  patch (body: OpointProps) {
+  _patch (body: OpointProps) {
     return this.fetch({ body: JSON.stringify(body), method: 'PATCH' })
   }
 
   /**
    *
    */
-  post (body: OpointProps) {
-    const opts = {
+  _post (body: any) {
+    const params = {
       method: 'POST',
       body: JSON.stringify(body)
     }
 
-    return this.fetch(opts)
+    return this.fetch(params)
   }
 }

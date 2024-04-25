@@ -11,7 +11,7 @@ import {
 
 
 export class StoredSearch extends BaseService {
-  endpoint = "storedsearch"
+  endpoint = 'storedsearch'
 
   constructor ({api_key}: {api_key: string}) {
     super({ api_key })
@@ -25,16 +25,20 @@ export class StoredSearch extends BaseService {
    */
   list () {
     const params = {} as StoredSearchListProps
-    return this.get(params)
+    return this._get(params)
   }
 
   add (params: StoredSearchAddProps) {
-    return this.post(params)
+    return this._post(params)
   }
 
   retrieve (params: StoredSearchRetrieveProps) {}
 
   update (params: StoredSearchUpdateProps) {}
 
-  // delete (params: StoredSearchDeleteProps) {}
+  delete ({id}: {id: string}): Promise<Response> {
+    if (!id) throw new Error("DELETE requires an ID.")
+
+    return this._delete(id)
+  }
 }
