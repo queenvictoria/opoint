@@ -6,7 +6,8 @@
 
 ## Installation
 ```bash
-$ npm install --save @opoint/opoint
+$ npm install --save @opoint/storedsearch
+$ npm install --save-dev @opoint/types
 ```
 
 ## Using stored search
