@@ -157,7 +157,11 @@ export type StoredSearchRetrieveResponse = {
   }
 } & StoredSearchAddResponse
 
-export type StoredSearchUpdateProps = {}
+export type StoredSearchUpdateProps = {
+  id: number|string
+} & StoredSearchAddProps
+
+export type StoredSearchUpdateResponse = StoredSearchRetrieveResponse
 
 export type StoredSearchDeleteProps = {
   id: number|string
@@ -174,5 +178,6 @@ export type OpointResponse = {
   data: StoredSearchAddResponse
     | StoredSearchFeedResponse
     | StoredSearchListResponse
+    | StoredSearchUpdateResponse
     | StoredSearchDeleteResponse
 }

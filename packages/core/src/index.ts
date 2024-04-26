@@ -65,8 +65,8 @@ export class BaseService {
   /**
    *
    */
-  _patch (body: OpointProps): Promise<OpointResponse> {
-    return this.fetch({ method: 'PATCH', body: JSON.stringify(body) })
+  _patch (paths: Array<string>, body: OpointProps): Promise<OpointResponse> {
+    return this.fetch({ method: 'PATCH', body: JSON.stringify(body) }, paths)
   }
 
   /**

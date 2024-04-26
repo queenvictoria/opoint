@@ -2,15 +2,15 @@ import { StoredSearch } from '@opoint/storedsearch'
 
 import {
   type StoredSearchFeedProps,
-  type StoredSearchListProps,
   type StoredSearchAddProps,
   type StoredSearchRetrieveProps,
   type StoredSearchUpdateProps,
   type StoredSearchDeleteProps,
   type StoredSearchListResponse,
   type FormatEnum,
-  StoredSearchFeedResponse,
-  StoredSearchRetrieveResponse
+  type StoredSearchFeedResponse,
+  type StoredSearchRetrieveResponse,
+  type StoredSearchUpdateResponse
 } from '@opoint/types'
 
 
@@ -81,23 +81,41 @@ test('Add stored search', async () => {
   searches = [body]
 }, 15 * SECONDS)
 
+let stored_search: StoredSearchRetrieveResponse
 test('Retrieve a stored search', async () => {
-  const props: StoredSearchRetrieveProps = {
+  const params: StoredSearchRetrieveProps = {
     id: TEST_ID
   }
-  const res = await api.retrieve(props)
+  const res = await api.retrieve(params)
   const body = res.data as StoredSearchRetrieveResponse
 
   expect(res.response).toHaveProperty('status')
   expect(res.response.status).toBe(200)
 
-  // This should return an object but doesn't
   expect(typeof body).toEqual('object')
   expect(body).toHaveProperty('id')
   expect(typeof body.id).toEqual('number')
+  stored_search = body
 })
 
-test.todo('Update stored search')
+test('Update stored search', async () => {
+  const { id, search } = stored_search
+  const params: StoredSearchUpdateProps = {
+    id,
+    search: search + " Claude"
+  }
+  const res = await api.update(params)
+  const body = res.data as StoredSearchUpdateResponse
+
+  expect(res.response).toHaveProperty('status')
+  expect(res.response.status).toBe(200)
+
+  expect(typeof body).toEqual('object')
+  expect(body).toHaveProperty('id')
+  expect(typeof body.id).toEqual('number')
+  expect(body.id).toEqual(id)
+  expect(body.search).toEqual(search + " Claude")
+})
 
 /* https://stackoverflow.com/questions/62680040/testing-function-to-throw-an-error-in-jest */
 test('Retrieving feed articles should fail without a from parameter', async () => {
@@ -110,10 +128,9 @@ test('Retrieve feed articles from all stored searches', async () => {
   // const from = Math.round((new Date().getTime() - (1*60*60*SECONDS))/1000)
   // @FIX Correctly calculate `from` value.
   const from = 1714033515
-  // const from = 1
   const params: StoredSearchFeedProps = {
     from,
-    format: 'json' as FormatEnum, // @FIX
+    format: 'json' as FormatEnum,
     num_art: 50,
   }
 

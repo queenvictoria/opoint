@@ -44,7 +44,11 @@ export class StoredSearch extends BaseService {
   }
 
   // @TODO PATCH
-  update (params: StoredSearchUpdateProps) {}
+  update (params: StoredSearchUpdateProps): Promise<OpointResponse> {
+    if (!params.id) throw new Error("Retrieve requires an ID.")
+
+    return this._patch([params.id.toString()], params)
+  }
 
   delete ({id}: StoredSearchDeleteProps): Promise<OpointResponse> {
     if (!id) throw new Error("Delete requires an ID.")
