@@ -1,12 +1,7 @@
 import {
-  type SearchProps,
-  type StoredSearchAddProps,
-  type StoredSearchListProps
+  type OpointProps,
+  type OpointResponse
 } from '@opoint/types'
-
-type OpointProps = SearchProps
-  | StoredSearchAddProps
-  | StoredSearchListProps
 
 export class BaseService {
   base_url = 'https://api.opoint.com'
@@ -28,7 +23,7 @@ export class BaseService {
    *
    * @param params
    */
-  fetch (opts: RequestInit, paths?: Array<string>, params?: any) {
+  fetch (opts: RequestInit, paths?: Array<string>, params?: any): Promise<OpointResponse> {
     const fragments = [this.base_url, this.endpoint]
     if ( paths && paths.length > 0 ) {
       paths.forEach(p => fragments.push(p))
@@ -43,38 +38,41 @@ export class BaseService {
     opts.headers = this.headers
 
     return fetch(url, opts)
+      .then(async res => {
+        let data = {}
+        if ( opts.method && !['DELETE'].includes(opts.method))
+          data = await res.json()
+        return {
+          response: res, data
+        }
+      })
   }
 
   /**
    *
   */
-  _delete (id: string) {
+  _delete (id: string): Promise<OpointResponse> {
     return this.fetch({ method: 'DELETE' }, [id])
   }
 
   /**
    *
   */
-  _get (paths: Array<string>, params?: OpointProps) {
+  _get (paths: Array<string>, params?: OpointProps): Promise<OpointResponse> {
     return this.fetch({ method: 'GET' }, paths, params)
   }
 
   /**
    *
    */
-  _patch (body: OpointProps) {
-    return this.fetch({ body: JSON.stringify(body), method: 'PATCH' })
+  _patch (body: OpointProps): Promise<OpointResponse> {
+    return this.fetch({ method: 'PATCH', body: JSON.stringify(body) })
   }
 
   /**
    *
    */
-  _post (body: any) {
-    const params = {
-      method: 'POST',
-      body: JSON.stringify(body)
-    }
-
-    return this.fetch(params)
+  _post (body: OpointProps): Promise<OpointResponse> {
+    return this.fetch({ method: 'POST', body: JSON.stringify(body) })
   }
 }

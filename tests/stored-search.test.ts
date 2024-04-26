@@ -1,11 +1,25 @@
 import { StoredSearch } from '@opoint/storedsearch'
-import { StoredSearchFeedProps, type StoredSearchListResult } from '@opoint/types'
+
+import {
+  type StoredSearchFeedProps,
+  type StoredSearchListProps,
+  type StoredSearchAddProps,
+  type StoredSearchRetrieveProps,
+  type StoredSearchUpdateProps,
+  type StoredSearchDeleteProps,
+  type StoredSearchListResponse,
+  type FormatEnum,
+  StoredSearchFeedResponse,
+  StoredSearchRetrieveResponse
+} from '@opoint/types'
+
+
 import { expect, test } from '@jest/globals'
 import { DocumentProps } from '@opoint/types/src'
 
 const SECONDS = 1000
 const TEST_ID = 100418137
-let searches: Array<StoredSearchListResult> = []
+let searches: StoredSearchListResponse = []
 
 test('API key present', async () => {
   expect(process.env.OPOINT_API_KEY).not.toBe(undefined)
@@ -17,10 +31,10 @@ const api = new StoredSearch({ api_key: process.env.OPOINT_API_KEY })
 test('List stored searches', async () => {
   const res = await api.list()
 
-  expect(res).toHaveProperty('status')
-  expect(res.status).toBe(200)
+  expect(res.response).toHaveProperty('status')
+  expect(res.response.status).toBe(200)
 
-  const body = await res.json()
+  const body = res.data as StoredSearchListResponse
   expect(typeof body).toEqual("object")
   expect(Array.isArray(body)).toEqual(true)
   // expect(body).toBe(expect.any(Array))
@@ -33,7 +47,7 @@ test('List stored searches', async () => {
 }, 20 * SECONDS)
 
 test('Add stored search', async () => {
-  const props = {
+  const props: StoredSearchAddProps = {
     search: "Anthropic",
     // access_group: null,      // Not null
     // max_age: null,           // Not null
@@ -43,11 +57,11 @@ test('Add stored search', async () => {
   }
   const res = await api.add(props)
 
-  expect(res).toHaveProperty('status')
-  expect(res.status).not.toBe(400) // Status: Bad request
-  expect(res.status).toBe(201)
+  expect(res.response).toHaveProperty('status')
+  expect(res.response.status).not.toBe(400) // Status: Bad request
+  expect(res.response.status).toBe(201)
 
-  const body = await res.json()
+  const body = res.data as StoredSearchRetrieveResponse
   expect(typeof body).toEqual('object')
   expect(body).toHaveProperty('id')
   expect(typeof body.id).toEqual('number')
@@ -68,14 +82,14 @@ test('Add stored search', async () => {
 }, 15 * SECONDS)
 
 test('Retrieve a stored search', async () => {
-  const props = {
+  const props: StoredSearchRetrieveProps = {
     id: TEST_ID
   }
   const res = await api.retrieve(props)
-  const body = await res.json()
+  const body = res.data as StoredSearchRetrieveResponse
 
-  expect(res).toHaveProperty('status')
-  expect(res.status).toBe(200)
+  expect(res.response).toHaveProperty('status')
+  expect(res.response.status).toBe(200)
 
   // This should return an object but doesn't
   expect(typeof body).toEqual('object')
@@ -84,10 +98,10 @@ test('Retrieve a stored search', async () => {
 })
 
 test.todo('Update stored search')
+
+/* https://stackoverflow.com/questions/62680040/testing-function-to-throw-an-error-in-jest */
 test('Retrieving feed articles should fail without a from parameter', async () => {
-  // const res = await api.feed()
-  // @FIX Test for an exception
-  expect(api.feed()).toThrow("Feed requires a `from` timestamp.")
+  expect(() => api.feed()).toThrow(Error)
 })
 
 // Don't nest tests
@@ -99,15 +113,15 @@ test('Retrieve feed articles from all stored searches', async () => {
   // const from = 1
   const params: StoredSearchFeedProps = {
     from,
-    format: 'json', // @FIX
+    format: 'json' as FormatEnum, // @FIX
     num_art: 50,
   }
 
   const res = await api.feed(params)
-  const body = await res.json()
+  const body = res.data as StoredSearchFeedResponse
 
-  expect(res).toHaveProperty('status')
-  expect(res.status).toBe(200)
+  expect(res.response).toHaveProperty('status')
+  expect(res.response.status).toBe(200)
 
   expect(body).toHaveProperty('searchresult')
   expect(typeof body.searchresult).toEqual('object')
@@ -120,7 +134,7 @@ test('Retrieve feed articles from all stored searches', async () => {
   expect(body.searchresult).toHaveProperty('document')
   expect(Array.isArray(body.searchresult.document)).toEqual(true)
 
-  documents = body.searchresult.document
+  if ( body.searchresult.document ) documents = body.searchresult.document
 
   expect(documents.length).toBeGreaterThan(0)
   if (params.num_art)
@@ -147,11 +161,11 @@ test('Retrieved feed articles', () => {
 })
 
 test('Delete stored search', async () => {
-  const props = {
+  const props: StoredSearchDeleteProps = {
     id: searches[0]?.id
   }
   const res = await api.delete(props)
 
-  expect(res).toHaveProperty('status')
-  expect(res.status).toBe(204) // Status: No content
+  expect(res.response).toHaveProperty('status')
+  expect(res.response.status).toBe(204) // Status: No content
 }, 15 * SECONDS)

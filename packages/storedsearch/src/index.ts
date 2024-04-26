@@ -6,7 +6,8 @@ import {
   type StoredSearchAddProps,
   type StoredSearchRetrieveProps,
   type StoredSearchUpdateProps,
-  type StoredSearchDeleteProps
+  type StoredSearchDeleteProps,
+  type OpointResponse
 } from '@opoint/types'
 
 
@@ -18,7 +19,7 @@ export class StoredSearch extends BaseService {
   }
 
   // https://api-docs.opoint.com/references/api#storedsearch-get-storedsearch-feed
-  feed (params?: StoredSearchFeedProps) {
+  feed (params?: StoredSearchFeedProps): Promise<OpointResponse> {
     if ( !params?.from) throw new Error("Feed requires a `from` timestamp.")
 
     return this._get(['feed'], params)
@@ -27,24 +28,25 @@ export class StoredSearch extends BaseService {
   /**
    * List all stored searches
    */
-  list () {
+  list (): Promise<OpointResponse> {
     const params = {} as StoredSearchListProps
     return this._get([], params)
   }
 
-  add (params: StoredSearchAddProps) {
+  add (params: StoredSearchAddProps): Promise<OpointResponse> {
     return this._post(params)
   }
 
-  retrieve ({id}: StoredSearchRetrieveProps) {
+  retrieve ({id}: StoredSearchRetrieveProps): Promise<OpointResponse> {
     if (!id) throw new Error("Retrieve requires an ID.")
 
     return this._get([id.toString()])
   }
 
+  // @TODO PATCH
   update (params: StoredSearchUpdateProps) {}
 
-  delete ({id}: {id: string|number}): Promise<Response> {
+  delete ({id}: StoredSearchDeleteProps): Promise<OpointResponse> {
     if (!id) throw new Error("Delete requires an ID.")
 
     return this._delete(id.toString())

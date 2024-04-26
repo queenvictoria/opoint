@@ -1,6 +1,6 @@
 import { Url } from "url"
 
-enum format {
+export enum FormatEnum {
   JSON = "json",
   XML = "xml"
 }
@@ -70,7 +70,7 @@ export type DocumentProps = {
   }
   word_count: number
   first_source: {
-    id: number
+    id: number|string
     name: string
     sitename: string
     url: Url
@@ -97,19 +97,12 @@ export type DocumentProps = {
   stored_search_id: number
 }
 
-export type StoredSearchListResult = {
-  id: number
-  // search: string
-  last_new_article: number
-  // max_age: number
-  // get_old_articles: boolean
-  // use_syndicates: boolean
-} & StoredSearchAddProps
+export type StoredSearchListResponse = Array<StoredSearchRetrieveResponse>
 
 export type StoredSearchFeedProps = {
   from: number
   to?: number
-  format?: format     // json|xml
+  format?: FormatEnum     // json|xml
   num_art?: number
   topics?: number     // 0|1
   matches?: number    // 0|1
@@ -119,7 +112,7 @@ export type StoredSearchFeedProps = {
 }
 
 export type StoredSearchFeedResponse = {
-  search_result: {
+  searchresult: {
     documents: number
     search_start: number
     covered: number
@@ -147,9 +140,39 @@ export type StoredSearchAddProps = {
   use_syndicates?: boolean
 }
 
+export type StoredSearchAddResponse = {
+  id: number|string
+} & StoredSearchAddProps
+
 export type StoredSearchRetrieveProps = {
   id: number|string
 }
 
+export type StoredSearchRetrieveResponse = {
+  last_new_article: number
+  access_group: {
+    access_groups: Array<any>
+    sites: Array<any>
+    sources: Array<any>
+  }
+} & StoredSearchAddResponse
+
 export type StoredSearchUpdateProps = {}
-export type StoredSearchDeleteProps = {}
+
+export type StoredSearchDeleteProps = {
+  id: number|string
+}
+
+export type StoredSearchDeleteResponse = {}
+
+export type OpointProps = SearchProps
+  | StoredSearchAddProps
+  | StoredSearchListProps
+
+export type OpointResponse = {
+  response: Response
+  data: StoredSearchAddResponse
+    | StoredSearchFeedResponse
+    | StoredSearchListResponse
+    | StoredSearchDeleteResponse
+}
