@@ -1,6 +1,6 @@
 {
   "name": "@opoint/core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index",
   "scripts": {
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@opoint/types": "^1.0.0"
+    "@opoint/types": "^0.0.1"
   }
 }
