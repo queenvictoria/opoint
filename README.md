@@ -71,6 +71,9 @@ const res = await api.delete(props)
 
 ```bash
 $ npm install --dev
+$ cp env.sample .env
+# Update .env with an oPoint API key.
+$ source .env
 $ npm run tests
 ```
 
@@ -90,4 +93,15 @@ $ ls -la node_modules/@opoint/
 $ npm install @opoint/types --workspace ./packages/storedsearch
 $ cat packages/storedsearch/package.json | grep -C1 opoint
 $ npm ls
+```
+
+### Publishing
+
+```bash
+$ npm version patch -ws --verbose
+# Can't publish them all at once because of interdependcies
+# $ npm publish --access public -ws --verbose
+$ npm publish --access public -w @opoint/types
+$ npm publish --access public -w @opoint/core
+$ npm publish --access public -w @opoint/storedsearch
 ```
