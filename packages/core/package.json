@@ -1,18 +1,18 @@
 {
-  "name": "@opoint/core",
-  "version": "0.0.2",
-  "description": "",
-  "main": "dist/index",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": "",
+  "dependencies": {
+    "@opoint/types": "^0.0.2"
   },
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "dist/index",
+  "name": "@opoint/core",
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@opoint/types": "^0.0.1"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.2"
 }

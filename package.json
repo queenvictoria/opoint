@@ -2,7 +2,7 @@
   "name": "@opoint/opoint",
   "version": "0.0.2",
   "description": "Client wrappers around the oPoint API.",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc --build --verbose tsconfig.build.json",
     "test": "jest"
