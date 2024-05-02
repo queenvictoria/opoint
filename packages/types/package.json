@@ -1,6 +1,6 @@
 {
   "name": "@opoint/types",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "dist/index",
   "types": "dist/index",
   "devDependencies": {},

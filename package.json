@@ -8,7 +8,9 @@
     "test": "jest"
   },
   "workspaces": [
-    "packages/*"
+    "packages/types",
+    "packages/core",
+    "packages/storedsearch"
   ],
   "repository": {
     "type": "git",
