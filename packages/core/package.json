@@ -9,7 +9,8 @@
     "access": "public"
   },
   "scripts": {
+    "prepack": "cp ../../README.md ./ && cp ../../LICENSE ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.0.5"
+  "version": "0.0.7"
 }
