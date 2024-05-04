@@ -20,9 +20,10 @@ export type SearchProps = {
   params?: ParamsProps
 }
 
-export type textProps = {
+export type TextProps = {
   matches: boolean
-  text: string
+  text?: string
+  readmore?: boolean
 }
 
 export type ImageProps = {
@@ -76,9 +77,9 @@ export type DocumentProps = {
     url: Url
     siteurl: Url
   }
-  header: textProps
-  summary: textProps
-  body: textProps
+  header: TextProps
+  summary: TextProps
+  body: TextProps
   articleimages: {
     count: number
     articleimage: Array<ImageProps>
@@ -100,10 +101,11 @@ export type DocumentProps = {
 export type StoredSearchListResponse = Array<StoredSearchRetrieveResponse>
 
 export type StoredSearchFeedProps = {
-  from: number
-  to?: number
-  format?: FormatEnum     // json|xml
-  num_art?: number
+  from: number        // timestamp in seconds. Must be after the earliest stored search.
+  to?: number         // timestamp in seconds. If greater than now set to now.
+  interval?: number   // 120-1800 ignored if `to` is set
+  format?: FormatEnum // json|xml
+  num_art?: number    // defaults to 25000. This is `per` stored search not a limit
   topics?: number     // 0|1
   matches?: number    // 0|1
   equalgroup?: number // 0|1
