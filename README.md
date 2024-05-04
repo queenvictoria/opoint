@@ -98,6 +98,7 @@ $ npm ls
 ### Publishing
 
 ```bash
+$ npm run build
 $ npm version patch -ws --verbose
 # Can't publish them all at once because of interdependcies
 # $ npm publish --access public -ws --verbose
