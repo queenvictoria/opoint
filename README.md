@@ -100,6 +100,7 @@ $ npm ls
 ```bash
 $ npm run build
 $ npm version patch -ws --verbose
+# git commit and push
 # Can't publish them all at once because of interdependcies
 # $ npm publish --access public -ws --verbose
 $ npm publish --access public -w @opoint/types
