@@ -100,7 +100,7 @@ test('Retrieve a stored search', async () => {
   expect(body).toHaveProperty('id')
   expect(typeof body.id).toEqual('number')
   stored_search = body
-})
+}, 10 * SECONDS)
 
 test('Update stored search', async () => {
   const { id, search } = stored_search

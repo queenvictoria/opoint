@@ -79,6 +79,9 @@ const res = await api.delete(props)
 
 ## Contributing
 
+Uses patterns for a typescript monorepo found here:
+https://blog.frankdejonge.nl/setting-up-a-typescript-mono-repo-for-scoped-packages/
+
 ### Tests
 
 ```bash
@@ -110,12 +113,12 @@ $ npm ls
 ### Publishing
 
 ```bash
-$ npm run build
+$ npm run build -ws
 $ npm version patch -ws --verbose
 # git commit and push
 # Can't publish them all at once because of interdependcies
-# $ npm publish --access public -ws --verbose
-$ npm publish --access public -w @opoint/types
-$ npm publish --access public -w @opoint/core
-$ npm publish --access public -w @opoint/storedsearch
+$ npm publish --access public -ws --verbose
+# $ npm publish --access public -w @opoint/types
+# $ npm publish --access public -w @opoint/core
+# $ npm publish --access public -w @opoint/storedsearch
 ```

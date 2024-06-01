@@ -1,23 +1,21 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "packages/types"
-    },
-    {
-      "path": "packages/core"
-    },
-    // {
-    //   "path": "packages/eslint-config"
-    // },
-    // {
-    //   "path": "packages/search"
-    // },
-    {
-      "path": "packages/storedsearch"
-    },
-    // {
-    //   "path": "packages/safefeed"
-    // }
-  ]
+  "extends": "@tsconfig/recommended",
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.stub.ts",
+    "node_modules",
+    "dist"
+  ],
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "paths": {
+      "@opoint/*": ["./packages/*/"]
+    }
+  }
 }
