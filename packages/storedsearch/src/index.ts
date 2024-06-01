@@ -22,6 +22,40 @@ export class StoredSearch extends BaseService {
   feed (params?: StoredSearchFeedProps): Promise<OpointResponse> {
     if ( !params?.from) throw new Error("Feed requires a `from` timestamp.")
 
+    /**
+     * Four bits
+     *  1 Topics
+     *  2 Entities
+     *  3 Entities without a wikidata id
+     *  4 Highlighting: adds entity ids to match tags, using ent attributes.  Since these tags are activated by main.matches, you should set that as well.
+     *
+     *  1 0001  Topics.
+     *  2 0010  Entities.
+     *  3 0011  Topics and entities.
+     *  4 0100  Entities without a wikidata id.
+     *  5 0101  Topics and entities without a wikidata id.
+     *  6 0110  Entities including those without a wikidata id.
+     *  7 0111  Setting it to 7 will include all the available data, but no highlighting information.
+     *  8 1000  Setting it 8 will include only highlighting information.
+     *  9 1001  Topics and highlights.
+     * 10 1010  Entities and highlights.
+     * 14 1110  Entities including those without a wikidata id and highlighs.
+     * 15 1111  Setting it to 15 will include everything.
+
+     */
+    // https://api-docs.opoint.com/references/search-request#parameters-textrazor
+    if ( params.features && ! params.textrazor ) {
+      if ( params.features.all )
+        params.textrazor = 15
+      else if ( params.features.entities && params.features.topics )
+        params.textrazor = 15
+      else if ( params.features.topics )
+        params.textrazor = 9
+      else if ( params.features.entities )
+        params.textrazor = 14
+
+      delete params.features
+    }
     return this._get(['feed'], params)
   }
 

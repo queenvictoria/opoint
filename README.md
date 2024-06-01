@@ -35,11 +35,23 @@ const params: StoredSearchRetrieveProps = {
 const res = await api.retrieve(params)
 const body = res.data as StoredSearchRetrieveResponse
 
-// Retrieve data from all stored searchs
+// Retrieve data from all stored searches
 const params: StoredSearchFeedProps = {
   from: 0,      // A Unix timestamp (in seconds since epoc)
   format: 'json' as FormatEnum, // or `xml`
   num_art: 50,  // Number of articles to return
+}
+
+// Retrieve data enriched by textrazor
+const params: StoredSearchFeedProps = {
+  from: 0,      // A Unix timestamp (in seconds since epoc)
+  format: 'json' as FormatEnum, // or `xml`
+  num_art: 50,  // Number of articles to return
+  features: {
+    entities: true, // Return entites found in articles
+    topics: true,   // Return topics found in articles
+    // all: true    // Return topics and entities
+  }
 }
 
 const res = await api.feed(params)

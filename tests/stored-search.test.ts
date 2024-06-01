@@ -11,13 +11,15 @@ import {
   type StoredSearchFeedResponse,
   type StoredSearchRetrieveResponse,
   type StoredSearchUpdateResponse,
+  EntityTypeEnum,
+  type EntityProps,
   type DocumentProps,
 } from '@opoint/types'
 
 
 import { expect, test } from '@jest/globals'
 // Use while updating src and remove after build.
-// import { DocumentProps, EntityProps, StoredSearchFeedProps } from '@opoint/types/src'
+// import { DocumentProps, EntityTypeProps, StoredSearchFeedProps } from '@opoint/types/src'
 
 const SECONDS = 1000
 const TEST_ID = 100418137
@@ -154,8 +156,6 @@ test('Retrieve feed articles from all stored searches', async () => {
   if ( body.searchresult.document ) documents = body.searchresult.document
 
   expect(documents.length).toBeGreaterThan(0)
-  // if (params.num_art)
-  //   expect(documents.length).toBeLessThan(params.num_art)
 }, 30 * SECONDS)
 
 // Cant nest tests in Jest
@@ -184,10 +184,16 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
     format: 'json' as FormatEnum,
     num_art: 50,
     // https://api-docs.opoint.com/references/search-request#parameters-textrazor
-    textrazor: 15, // topics_and_entities
+    // textrazor: 15, // topics_and_entities
+    // Convenience props to enable enrichment via textrazor
+    features: {
+      // topics: true,
+      // entities: true,
+      all: true,
+    }
     // https://api-docs.opoint.com/references/search-response#document-meta_data
-    allmeta: true,
-    allsubject: true,
+    // allmeta: true,
+    // allsubject: true,
   }
 
   const res = await api.feed(params)
@@ -210,15 +216,14 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
   if ( body.searchresult.document ) documents = body.searchresult.document
 
   expect(documents.length).toBeGreaterThan(0)
-  // if (params.num_art)
-  //   expect(documents.length).toBeLessThan(params.num_art)
+
+  let enriched = 0
 
   documents.forEach((document, i) => {
     expect(document).toHaveProperty('header')
     expect(document.header).toHaveProperty('text')
     expect(document).toHaveProperty('body')
     if (!document.body.text) {
-      console.log(i, "Missing body. Skipping remaining tests.")
       return
     }
     expect(document.body).toHaveProperty('text')
@@ -229,25 +234,29 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
 
     // English only according to oPoint so may be missing.
     if (langcode !== 'en') {
-      console.log(i, `Not english (${langcode}). Skipping remaining tests.`)
       return
     }
     if (!document.topics_and_entities) {
-      console.log(i, "Missing topics_and_entities. Skipping remaining tests.")
       return
     }
     expect(document).toHaveProperty('topics_and_entities')
     expect(Array.isArray(document.topics_and_entities)).toBeTruthy
+
     expect(document.topics_and_entities).toHaveProperty('entities')
-    Object.keys(document.topics_and_entities?.entities).forEach(key => {
-      const entities = document.topics_and_entities?.entities[key]
-      entities.forEach((entity) => {
-        expect(entity).toHaveProperty('entity')
-        expect(typeof entity.entity).toEqual('string')
+    const entities = document.topics_and_entities.entities
+    if ( entities ) {
+      Object.keys(entities).forEach((key:string) => {
+        const k = EntityTypeEnum[key as keyof typeof EntityTypeEnum]
+
+        entities[k] && entities[k].forEach((entity: EntityProps) => {
+          expect(entity).toHaveProperty('entity')
+          expect(typeof entity.entity).toEqual('string')
+        })
       })
-    })
+    }
+
     expect(document.topics_and_entities).toHaveProperty('topics')
-    document.topics_and_entities?.topics.forEach(topic => {
+    document.topics_and_entities?.topics?.forEach(topic => {
       expect(topic).toHaveProperty('label')
       expect(typeof topic.label).toEqual('string')
       expect(topic).toHaveProperty('score')
@@ -255,7 +264,10 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
     })
 
     // expect(document).toHaveProperty('sentiment')
+
+    enriched++
   })
+  expect(enriched).toBeGreaterThan(0)
 }, 30 * SECONDS)
 
 test('Delete stored search', async () => {

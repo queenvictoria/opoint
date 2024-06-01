@@ -98,11 +98,7 @@ export type DocumentProps = {
   stored_search_id: number
   topics_and_entities?: {
     topics?: TopicProps[]
-    entities?: {
-      location?: EntityProps[]
-      organization?: EntityProps[]
-      person?: EntityProps[]
-    }
+    entities?: EntityTypeProps
   }
 }
 
@@ -116,6 +112,14 @@ export type TopicProps = {
   mediatopic_id?: string
   score: number
 }
+
+export enum EntityTypeEnum {
+  location,
+  organization,
+  person
+}
+
+export interface EntityTypeProps extends Record<EntityTypeEnum, EntityProps[]> {}
 
 export type StoredSearchListResponse = Array<StoredSearchRetrieveResponse>
 
@@ -132,6 +136,13 @@ export type StoredSearchFeedProps = {
   textrazor?: number  // requires licence
   allmeta?: boolean
   allsubject?: boolean
+
+  // Convenience props to configure textrazor (requires licence)
+  features?: {
+    topics?: boolean
+    entities?: boolean
+    all?: boolean
+  }
 }
 
 export type StoredSearchFeedResponse = {
