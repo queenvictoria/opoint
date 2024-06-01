@@ -1,11 +1,13 @@
 {
   "author": "",
+  "dependencies": {
+    "@opoint/types": "*"
+  },
   "description": "",
   "keywords": [],
   "license": "ISC",
   "main": "dist/index",
   "name": "@opoint/core",
-  "type": "module",
   "publishConfig": {
     "access": "public"
   },
@@ -13,5 +15,6 @@
     "prepack": "cp ../../README.md ./ && cp ../../LICENSE ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.0.11"
+  "type": "module",
+  "version": "0.0.12"
 }
