@@ -13,8 +13,7 @@
     "prepack": "cp ../../README.md ./ && cp ../../LICENSE ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
-  "version": "0.0.17",
+  "version": "0.0.21",
   "dependencies": {
     "@opoint/types": "file:../types"
   }

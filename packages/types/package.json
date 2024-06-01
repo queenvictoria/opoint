@@ -6,7 +6,6 @@
   "license": "ISC",
   "main": "dist/index",
   "name": "@opoint/types",
-  "type": "module",
   "publishConfig": {
     "access": "public"
   },
@@ -16,5 +15,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "types": "dist/index",
-  "version": "0.0.17"
+  "version": "0.0.21"
 }
