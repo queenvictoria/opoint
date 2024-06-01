@@ -14,9 +14,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "types": "dist/index.d.ts",
-  "version": "0.0.22",
+  "version": "0.0.24",
   "dependencies": {
-    "@opoint/core": "file:../core",
-    "@opoint/types": "file:../types"
+    "@opoint/core": "*",
+    "@opoint/types": "*"
   }
 }
