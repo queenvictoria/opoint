@@ -3,6 +3,7 @@
   "description": "",
   "keywords": [],
   "license": "ISC",
+  "main": "dist/index",
   "module": "dist/index.js",
   "name": "@opoint/storedsearch",
   "publishConfig": {
