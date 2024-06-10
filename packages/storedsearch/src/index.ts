@@ -29,26 +29,33 @@ export class StoredSearch extends BaseService {
      *  3 Entities without a wikidata id
      *  4 Highlighting: adds entity ids to match tags, using ent attributes.  Since these tags are activated by main.matches, you should set that as well.
      *
-     *  1 0001  Topics.
-     *  2 0010  Entities.
-     *  3 0011  Topics and entities.
-     *  4 0100  Entities without a wikidata id.
-     *  5 0101  Topics and entities without a wikidata id.
-     *  6 0110  Entities including those without a wikidata id.
-     *  7 0111  Setting it to 7 will include all the available data, but no highlighting information.
-     *  8 1000  Setting it 8 will include only highlighting information.
-     *  9 1001  Topics and highlights.
-     * 10 1010  Entities and highlights.
-     * 14 1110  Entities including those without a wikidata id and highlighs.
-     * 15 1111  Setting it to 15 will include everything.
-
+     *   1      0001  Topics.
+     *   2      0010  Entities.
+     *   3      0011  Topics and entities.
+     *   4      0100  Entities without a wikidata id.
+     *   5      0101  Topics and entities without a wikidata id.
+     *   6      0110  Entities including those without a wikidata id.
+     *   7      0111  Setting it to 7 will include all the available data, but no highlighting information.
+     *   8      1000  Setting it 8 will include only highlighting information.
+     *   9      1001  Topics and highlights.
+     *  10      1010  Entities and highlights.
+     *  14      1110  Entities including those without a wikidata id and highlighst.
+     *  15      1111  Setting it to 15 will include everything.
+     * 256 100000000  Include sentiment. !!!! DOESN'T WORK BY ITSELF
+     * 271 100001111  Sentiment, topics, and entities, and highlights.
      */
     // https://api-docs.opoint.com/references/search-request#parameters-textrazor
+    const sentiment = 256
+    const topics_and_entities = 15
+
     if ( params.features && ! params.textrazor ) {
       if ( params.features.all )
-        params.textrazor = 15
+        params.textrazor = topics_and_entities + sentiment
+      // Can't get sentiment alone
+      else if ( params.features.sentiment )
+        params.textrazor = topics_and_entities + sentiment
       else if ( params.features.entities && params.features.topics )
-        params.textrazor = 15
+        params.textrazor = topics_and_entities
       else if ( params.features.topics )
         params.textrazor = 9
       else if ( params.features.entities )
