@@ -189,8 +189,8 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
     features: {
       // topics: true,
       // entities: true,
-      sentiment: true,
-      // all: true,
+      // sentiment: true, // Same as all at this point
+      all: true,
     }
     // https://api-docs.opoint.com/references/search-response#document-meta_data
     // allmeta: true,
