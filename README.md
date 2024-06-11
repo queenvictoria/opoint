@@ -50,7 +50,8 @@ const params: StoredSearchFeedProps = {
   features: {
     entities: true, // Return entites found in articles
     topics: true,   // Return topics found in articles
-    // all: true    // Return topics and entities
+    sentiment: true,// Return sentiment found in articles
+    // all: true    // Return sentiment, topics, and entities
   }
 }
 

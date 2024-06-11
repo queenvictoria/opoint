@@ -189,7 +189,8 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
     features: {
       // topics: true,
       // entities: true,
-      all: true,
+      sentiment: true,
+      // all: true,
     }
     // https://api-docs.opoint.com/references/search-response#document-meta_data
     // allmeta: true,
@@ -263,7 +264,11 @@ test('Retrieve enriched feed articles from all stored searches', async () => {
       expect(typeof topic.score).toEqual('number')
     })
 
-    // expect(document).toHaveProperty('sentiment')
+    // @TODO Should be a string one of 'Positive' 'Negative' 'Neutral'
+    expect(document.topics_and_entities).toHaveProperty('sentiment')
+    // @TODO Should be a float between -1 and 1
+    expect(document.topics_and_entities).toHaveProperty('sentiment_score')
+    // @TODO Each entity should also have a sentiment string
 
     enriched++
   })

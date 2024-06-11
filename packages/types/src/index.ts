@@ -97,6 +97,8 @@ export type DocumentProps = {
   tags: Array<string> // At a guess
   stored_search_id: number
   topics_and_entities?: {
+    sentiment?: SentimentDirectionEnum
+    sentiment_score?: number
     topics?: TopicProps[]
     entities?: EntityTypeProps
   }
@@ -105,6 +107,7 @@ export type DocumentProps = {
 export type EntityProps = {
   entity: string
   wikidata_id?: string
+  sentiment?: SentimentDirectionEnum
 }
 
 export type TopicProps = {
@@ -117,6 +120,12 @@ export enum EntityTypeEnum {
   location,
   organization,
   person
+}
+
+export declare enum SentimentDirectionEnum {
+  Negative = -1,
+  Neutral = 0,
+  Positive = 1,
 }
 
 export interface EntityTypeProps extends Record<EntityTypeEnum, EntityProps[]> {}
@@ -141,6 +150,7 @@ export type StoredSearchFeedProps = {
   features?: {
     topics?: boolean
     entities?: boolean
+    sentiment?: boolean
     all?: boolean
   }
 }
