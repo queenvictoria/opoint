@@ -2,7 +2,6 @@
   "name": "@opoint/opoint",
   "version": "0.0.2",
   "description": "Client wrappers around the oPoint API.",
-  "type": "module",
   "scripts": {
     "build": "tsc --build --verbose tsconfig.build.json",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
@@ -46,5 +45,10 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@opoint/core": "^0.0.12",
+    "@opoint/storedsearch": "^0.0.12",
+    "@opoint/types": "^0.0.12"
   }
 }

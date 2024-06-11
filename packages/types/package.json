@@ -6,14 +6,14 @@
   "license": "ISC",
   "main": "dist/index",
   "name": "@opoint/types",
-  "type": "module",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "build": "rm -rf dist/* && tsc -p tsconfig.pkg.json",
     "prepack": "cp ../../README.md ./ && cp ../../LICENSE ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "types": "dist/index",
-  "version": "0.0.12"
+  "version": "0.0.24"
 }

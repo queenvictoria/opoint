@@ -1,22 +1,22 @@
 {
   "author": "",
-  "dependencies": {
-    "@opoint/core": "*",
-    "@opoint/types": "*"
-  },
   "description": "",
   "keywords": [],
   "license": "ISC",
-  "module": "dist/index.js",
+  "main": "dist/index",
   "name": "@opoint/storedsearch",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "build": "rm -rf dist/* && tsc -p tsconfig.pkg.json",
     "prepack": "cp ../../README.md ./ && cp ../../LICENSE ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.0.12"
+  "version": "0.0.24",
+  "dependencies": {
+    "@opoint/core": "*",
+    "@opoint/types": "*"
+  }
 }
